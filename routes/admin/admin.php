@@ -12,3 +12,8 @@ Route::group(['prefix' => 'public'],function(){
     Route::post('/loginPost','PublicController@loginPost');//登陆验证
     Route::post('/logout','PublicController@logout');//登出
 });
+
+//权限管理
+Route::group(['prefix' => 'permission','middleware' => 'adminAuth'],function(){
+    Route::post('/getAdminPermission','PermissionController@getAdminPermission');//获取管理员权限
+});

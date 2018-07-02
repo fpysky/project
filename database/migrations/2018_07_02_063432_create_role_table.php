@@ -17,8 +17,8 @@ class CreateRoleTable extends Migration
             $table->engine = 'InnoDB';
             $table->integer('id')->autoIncrement();
             $table->string('name',60);
-            $table->integer('created_at');
-            $table->integer('updated_at');
+            $table->integer('created_at')->nullable();
+            $table->integer('updated_at')->nullable();
         });
     }
 

@@ -17,8 +17,8 @@ class CreateRoleHasPermissionTable extends Migration
             $table->engine = 'InnoDB';
             $table->integer('role_id');
             $table->integer('permission_id');
-            $table->integer('created_at');
-            $table->integer('updated_at');
+            $table->integer('created_at')->nullable();
+            $table->integer('updated_at')->nullable();
             $table->foreign('role_id')->references('id')->on('role');
             $table->foreign('permission_id')->references('id')->on('permission');
         });

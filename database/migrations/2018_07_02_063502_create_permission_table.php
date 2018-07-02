@@ -18,9 +18,9 @@ class CreatePermissionTable extends Migration
             $table->integer('id')->autoIncrement();
             $table->string('name',60);
             $table->string('route',60);
-            $table->integer('pid');
-            $table->integer('created_at');
-            $table->integer('updated_at');
+            $table->integer('pid')->default(0);
+            $table->integer('created_at')->nullable();
+            $table->integer('updated_at')->nullable();
         });
     }
 

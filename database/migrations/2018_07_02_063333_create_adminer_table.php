@@ -18,9 +18,9 @@ class CreateAdminerTable extends Migration
             $table->integer('id')->autoIncrement();
             $table->string('name',60);
             $table->string('account',60);
-            $table->string('password',100);
-            $table->integer('created_at');
-            $table->integer('updated_at');
+            $table->string('password',200);
+            $table->integer('created_at')->nullable();
+            $table->integer('updated_at')->nullable();
         });
     }
 

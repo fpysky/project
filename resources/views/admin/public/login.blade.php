@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>登陆到后台</title>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="/js/vue.js"></script>
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="/js/index.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/jquery-3.3.1.min.js"></script>
 </head>
 <style>
     .loginContent{
