@@ -61,11 +61,26 @@ class DatabaseSeeder extends Seeder
             'updated_at' => time()
         ]);
         //角色权限表
-        DB::table('role_has_permission')->insert([
+        DB::table('role_has_permission')->insert([[
             'permission_id' => 1,
             'role_id' => 1,
             'created_at' => time(),
             'updated_at' => time()
-        ]);
+        ],[
+            'permission_id' => 2,
+            'role_id' => 1,
+            'created_at' => time(),
+            'updated_at' => time()
+        ],[
+            'permission_id' => 3,
+            'role_id' => 1,
+            'created_at' => time(),
+            'updated_at' => time()
+        ],[
+            'permission_id' => 4,
+            'role_id' => 1,
+            'created_at' => time(),
+            'updated_at' => time()
+        ]]);
     }
 }
