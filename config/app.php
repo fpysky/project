@@ -1,7 +1,10 @@
 <?php
 
 return [
-
+    /**
+     * 验证码开关
+     */
+    'captchaSwitch' => env('APP_CAPTCHASWITCH', 'on'),
     /*
     |--------------------------------------------------------------------------
     | Application Name
