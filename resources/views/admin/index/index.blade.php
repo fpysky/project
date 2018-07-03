@@ -173,7 +173,6 @@
             getAdminInfo(){
                 axios.post('/admin/getAdminInfo',{}).then(response => {
                     this.adminInfo = response.data.list;
-                    // console.log(this.adminInfo);
                 }).catch(error => {
                     console.log(error);
                 });
