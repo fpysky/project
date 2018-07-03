@@ -14,9 +14,9 @@ class Adminer extends Base{
      * 获取管理员权限
      * @return array
      */
-    public static function getAdminPermission(){
+    public static function getAdminPermission($identity){
         //得到管理员角色
-        $adminHasRole = Adminer::find(1)->adminHasRole;
+        $adminHasRole = Adminer::find($identity['adminer_id'])->adminHasRole;
         $ids = [];
         foreach($adminHasRole as $k => $v){
             //得到角色下的权限
@@ -103,6 +103,8 @@ class Adminer extends Base{
                         ];
                     }
                     AdminHasRole::insert($insertData);
+                }else{
+                    return ['code' => 1,'message' => '角色不能为空'];
                 }
             }else{
                 //保存管理员
@@ -125,6 +127,8 @@ class Adminer extends Base{
                         ];
                     }
                     AdminHasRole::insert($insertData);
+                }else{
+                    return ['code' => 1,'message' => '角色不能为空'];
                 }
             }
             DB::commit();

@@ -82,11 +82,11 @@
             created(){
                 this.getData();
                 this.initHeight();
-                this.getPermissionList();
+                this.getAllPermission();
             },
             methods:{
-                getPermissionList(){
-                    axios.post('/admin/permission/getPermissionList', {}).then(response => {
+                getAllPermission(){
+                    axios.post('/admin/permission/getAllPermission', {}).then(response => {
                         this.permissions = response.data.list;
                     }).catch(function (error) {
                         console.log(error);

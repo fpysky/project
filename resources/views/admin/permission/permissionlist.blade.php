@@ -52,11 +52,6 @@
                 <el-form-item label="权限路由:" prop="route">
                     <el-input v-model="ruleForm.route" style="width:300px;"></el-input>
                 </el-form-item>
-                <el-form-item v-if="!isEdit" label="授权角色:" prop="roles">
-                    <el-checkbox-group v-model="ruleForm.roles" size="small">
-                        <el-checkbox v-for="item in roles" :key="item.id" :label="item.id" border><span v-text="item.name"></span></el-checkbox>
-                    </el-checkbox-group>
-                </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('ruleForm')">确定</el-button>
                 </el-form-item>
@@ -82,7 +77,6 @@
                     name:'',
                     route:'',
                     pid:0,
-                    roles:[],
                 },
                 rules: {
                     name: [
@@ -92,7 +86,7 @@
                         {required: true, message: '请输入权限路由', trigger: 'blur'},
                     ],
                 },
-                roles:[], 
+                // roles:[], 
                 page:1,
                 pSize:50,
                 total:0,
@@ -101,7 +95,7 @@
             },
             created(){
                 this.getData();
-                this.getRoleList();
+                // this.getRoleList();
                 this.getPidOptions();
                 this.initHeight();
             },
@@ -172,14 +166,13 @@
                             console.log(error);
                     });
                 },
-                getRoleList(){
-                    axios.post('/admin/permission/getRoleList', {}).then(response => {
-                        console.log(response);
-                        this.roles = response.data.list;
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                },
+                // getRoleList(){
+                //     axios.post('/admin/permission/getRoleList', {}).then(response => {
+                //         this.roles = response.data.list;
+                //     }).catch(function (error) {
+                //         console.log(error);
+                //     });
+                // },
                 submitForm(formName) {
                     this.$refs[formName].validate((valid) => {
                         if (valid) {
