@@ -32,24 +32,28 @@ class DatabaseSeeder extends Seeder
             'name' => '系统权限设置',
             'route' => '/admin/permission',
             'pid' => 0,
+            'icon' => 'certificate',
             'created_at' => time(),
             'updated_at' => time()
         ],[
             'name' => '管理员管理',
             'route' => '/admin/permission/adminlist',
             'pid' => 1,
+            'icon' => 'user-o',
             'created_at' => time(),
             'updated_at' => time()
         ],[
             'name' => '角色管理',
             'route' => '/admin/permission/rolelist',
             'pid' => 1,
+            'icon' => 'users',
             'created_at' => time(),
             'updated_at' => time()
         ],[
             'name' => '权限管理',
             'route' => '/admin/permission/permissionlist',
             'pid' => 1,
+            'icon' => 'drivers-license-o',
             'created_at' => time(),
             'updated_at' => time()
         ]]);

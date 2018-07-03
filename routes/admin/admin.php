@@ -3,6 +3,8 @@
 Route::group(['middleware' => 'adminAuth'],function(){
     Route::any('/','IndexController@index');//后台首页
     Route::any('/main','IndexController@main');//后台主页
+    Route::post('/getAdminInfo','IndexController@getAdminInfo');//得到管理员详细信息
+    Route::any('/admininfo','IndexController@admininfo');
 });
 
 //登录

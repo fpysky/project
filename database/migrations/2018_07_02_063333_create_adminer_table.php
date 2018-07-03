@@ -20,6 +20,7 @@ class CreateAdminerTable extends Migration
             $table->string('account',60);
             $table->string('email',60)->nullable();
             $table->string('password',200);
+            $table->string('head_img',100)->nullable();
             $table->integer('created_at')->nullable();
             $table->integer('updated_at')->nullable();
         });

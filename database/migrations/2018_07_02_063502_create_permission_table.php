@@ -18,6 +18,7 @@ class CreatePermissionTable extends Migration
             $table->integer('id')->autoIncrement();
             $table->string('name',60);
             $table->string('route',60);
+            $table->string('icon',60)->default('camera-retro');
             $table->integer('pid')->default(0);
             $table->integer('created_at')->nullable();
             $table->integer('updated_at')->nullable();

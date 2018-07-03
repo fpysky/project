@@ -18,6 +18,7 @@ class PermissionResource extends Resource
             'id' => $this->id,
             'name' => $this->name,
             'route' => $this->route,
+            'icon' => $this->icon,
             'pid' => $this->pid,
             'created_at' => $this->created_at?date('Y-m-d H-i-s',$this->created_at):'',
             'updated_at' => $this->updated_at?date('Y-m-d H-i-s',$this->updated_at):'',

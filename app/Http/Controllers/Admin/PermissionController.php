@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Adminer;
 use App\Models\Permission;
-use App\Models\RoleHasPermission;
 use App\Models\Role;
 use Validator;
 
@@ -64,14 +63,16 @@ class PermissionController extends Controller
         $args['id'] = isset($args['id'])?intval($args['id']):0;
         $args['email'] = $args['email'] ?? '';
         $rules = [
-            'name' => 'required',
-            'account' => 'required',
+            'name' => 'required|unique:adminer,name',
+            'account' => 'required|unique:adminer,account',
             'roles' => 'required'
         ];
         $rulesMsg = [
             'name.required' => '用户名不能为空',
             'account.required' => '账户名不能为空',
-            'roles.required' => '角色不能为空'
+            'roles.required' => '角色不能为空',
+            'roles.unique' => '用户名已存在',
+            'account.unique' => '登陆账户已存在'
         ];
         if($args['id'] == 0){
             $rules['password'] = 'required';
@@ -99,6 +100,8 @@ class PermissionController extends Controller
 
     /**
      * 删除管理员
+     * @param Request $request
+     * @return array
      */
     public function deleteAdmin(Request $request){
         $ids = $request->post('ids','');

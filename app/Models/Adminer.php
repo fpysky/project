@@ -32,6 +32,7 @@ class Adminer extends Base{
             if($vs['pid'] == 0){
                 $r['id'] = $vs['id'];
                 $r['pid'] = $vs['pid'];
+                $r['icon'] = $vs['icon'];
                 $r['route'] = $vs['route'];
                 $r['name'] = $vs['name'];
                 $ulist[] = $r;
@@ -46,6 +47,7 @@ class Adminer extends Base{
                     if($vss['id'] == $vs['pid']){
                         $r['id'] = $vs['id'];
                         $r['pid'] = $vs['pid'];
+                        $r['icon'] = $vs['icon'];
                         $r['route'] = $vs['route'];
                         $r['name'] = $vs['name'];
                         $ulist[$kss]['_child'][] = $r;
@@ -167,5 +169,11 @@ class Adminer extends Base{
         }catch (\Exception $e){
             return ['code' => 1,'message' => $e->getMessage()];
         }
+    }
+
+    public static function getAdminInfo($identity){
+        $list = Adminer::where('id','=',$identity['adminer_id'])->firstOrFail();
+        $list = new AdminerResource($list);
+        return ['code' => 0,'message' => '','list' => $list];
     }
 }

@@ -26,23 +26,56 @@
         position:absolute;
         left:0;
         top:0;
-        width:13%; 
-        background: #283643;
+        width:12%; 
+        background-color:#222d32;
     }
     .contentRight{
         position:absolute;
         right:0;
         top:0;
-        width:87%; 
+        width:88%;
     }
     .contentLeft-header{
         width:100%;
-        height:50px;
-        border-bottom:1px solid #000;
-    },
+        height:55px;
+        margin:50px 0 10px 0;
+    }
+    .contentLeft-header-left{
+        float:left;
+        height:45px;
+        width:45px;
+        background-color:#fff;
+        margin: 0 0 0 20px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    .contentLeft-header-left img{
+        width:100%;
+        height:100%;
+    }
+    .contentLeft-header-right{
+        float:left;
+        height:45px;
+        width:60%;
+        margin:0 0 0 20px;
+    }
+    .contentLeft-header-right p{
+        margin:5px 0;
+        color:#fff;
+    }
+    .contentLeft-header-right p a{
+        color:#F56C6C;
+        border:1px solid #F56C6C;
+    }
+    .contentLeft-header-right p:first-child{
+        font-size: 17px;
+    }
+    .contentLeft-header-right p:last-child{
+        font-size: 13px;
+    }
     #menu{
         width:100%;
-    },
+    }
     #menu a{
         display:block;
     }
@@ -53,7 +86,7 @@
         display:none;
     }
     #menu ul li ul a{
-        display:block;
+        /* display:block; */
     }
     #iframe{
         width:100%;
@@ -62,32 +95,21 @@
     #menu .menu-box{
         width:100%;
         overflow:hidden;
-        border-bottom: 1px solid rgba(107, 108, 109, 0.19);
     }
     #menu .menu-box i{
         text-indent:20px;
     }
     #menu .menu-box a{
-        color: #B5B5B5;
+        color: #fff;
         display:inline-block;
         padding:10px 0 10px 6px;
-    }
-    #menu .menu-box div a:first-child{
-        padding:14px 10px 7px 10px;
-    }
-    #menu .menu-box div a:last-child{
-        padding:7px 10px 14px 10px;
     }
     #menu .menu-box div{
         height:0;
         transition:height .5s;
     }
-    #menu .menu-box div a{
-        display:block;
-        font-size:15px;
-    }
-    #menu .menu-box div a{
-        padding:7px 10px;
+    #menu .menu-box div p{
+        margin:0;
     }
 </style>
 <body>
@@ -95,14 +117,26 @@
     <div class="content">
         <div class="contentLeft">
             <div class="contentLeft-header">
-                <a @click="logout" href="javascript:;">退出登录</a>
+                <a href="javascript:;" @click="setAdminInfo">
+                    <div class="contentLeft-header-left">
+                        <img src="/images/header.jpg" alt="" />
+                    </div>
+                </a>
+                <div class="contentLeft-header-right">
+                    <p v-text="adminInfo.name"></p>
+                    <p><a @click="logout" href="javascript:;">退出登录</a></p>
+                </div>
+                
             </div>
             <div id="menu">
                 <div class="menu-box" v-for="items in permissions" :key="items.id">
-                    <i class="fa fa-camera-retro"></i>
+                    <i :class="items.icon == ''?'fa-camera-retro':'fa fa-' + items.icon"></i>
                     <a v-text="items.name" href="javascript:;"></a>
-                    <div style="background-color:#17191B;text-indent:38px;">
-                        <a v-for="items_items in items._child" :key="items_items.id" @click="menuAClick(items_items.route)" href="javascript:;" v-text="items_items.name"></a>
+                    <div style="background-color:#2A383E;">
+                        <p v-for="items_items in items._child" :key="items_items.id">
+                            <i :class="items_items.icon == ''?'fa-camera-retro':'fa fa-' + items_items.icon"></i>
+                            <a @click="menuAClick(items_items.route)" href="javascript:;" v-text="items_items.name"></a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -115,46 +149,57 @@
 </body>
 </html>
 <script>
-    function menuActive(){
-        let menu = document.getElementById('menu');
-        let menuBox = menu.getElementsByClassName('menu-box');
-        for(let i = 0;i < menuBox.length;i++){ 
-            menuBox[i].getElementsByTagName('a')[0].onclick = function(){
-                let len = this.nextElementSibling.getElementsByTagName('a').length;
-                console.log(len);
-                if(this.nextElementSibling.offsetHeight == 0){
-                    if(len == 1){
-                        this.nextElementSibling.style.height = 34 +'px';
-                    }else{
-                        this.nextElementSibling.style.height = 34 * len + 20 +'px';
-                    }
-                    
-                }else{
-                    this.nextElementSibling.style.height = 0;
-                }
-            }
-        }
-    }
     new Vue({
         el:'#app',
         data:{
             permissions:[],
+            adminInfo:{},
         },
         created(){
             this.initHeight();
             this.getAdminPermission();
-            
+            this.getAdminInfo();
         },
         updated() {
             this.$nextTick(function () {
-                menuActive();
+                this.menuActive();
             })
         },
         methods:{
+            setAdminInfo(){
+                document.getElementById('iframe').setAttribute('src','/admin/admininfo');
+                return false;
+            },
+            getAdminInfo(){
+                axios.post('/admin/getAdminInfo',{}).then(response => {
+                    this.adminInfo = response.data.list;
+                    // console.log(this.adminInfo);
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+            menuActive(){
+                let menu = document.getElementById('menu');
+                let menuBox = menu.getElementsByClassName('menu-box');
+                for(let i = 0;i < menuBox.length;i++){ 
+                    menuBox[i].getElementsByTagName('a')[0].onclick = function(){
+                        let len = this.nextElementSibling.getElementsByTagName('a').length;
+                        if(this.nextElementSibling.offsetHeight == 0){
+                            if(len == 1){
+                                this.nextElementSibling.style.height = 34 +'px';
+                            }else{
+                                this.nextElementSibling.style.height = 34 * len + 20 +'px';
+                            }
+                        }else{
+                            this.nextElementSibling.style.height = 0;
+                        }
+                    }
+                }
+            },
             getAdminPermission(){
                 axios.post('/admin/permission/getAdminPermission',{}).then(response => {
                     this.permissions = response.data.list;
-                }).catch(function (error) {
+                }).catch(error => {
                     console.log(error);
                 });
             },
@@ -165,7 +210,7 @@
             logout(){
                 axios.post('/admin/public/logout',{}).then(function (response) {
                     window.location.reload();
-                }).catch(function (error) {
+                }).catch(error => {
                     console.log(error);
                 });
             },
