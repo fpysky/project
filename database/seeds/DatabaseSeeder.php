@@ -36,19 +36,19 @@ class DatabaseSeeder extends Seeder
             'updated_at' => time()
         ],[
             'name' => '管理员管理',
-            'route' => '/admin/adminlist',
+            'route' => '/admin/permission/adminlist',
             'pid' => 1,
             'created_at' => time(),
             'updated_at' => time()
         ],[
             'name' => '角色管理',
-            'route' => '/admin/rolelist',
+            'route' => '/admin/permission/rolelist',
             'pid' => 1,
             'created_at' => time(),
             'updated_at' => time()
         ],[
             'name' => '权限管理',
-            'route' => '/admin/permissionlist',
+            'route' => '/admin/permission/permissionlist',
             'pid' => 1,
             'created_at' => time(),
             'updated_at' => time()
