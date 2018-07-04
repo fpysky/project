@@ -136,10 +136,7 @@
                 },
                 deleteFunc(k){
                     if(k == -1 && this.multipleSelection.length == 0){
-                        this.$message({
-                            message: '请至少选择一条记录',
-                            type: 'warning'
-                        });
+                        this.$message.warning('请至少选择一条记录');
                     }else{
                         this.$confirm('确定删除吗?', '提示', {
                             confirmButtonText: '确定',
@@ -156,16 +153,10 @@
                             }
                             axios.post('/admin/permission/deleteAdmin', {ids:ids}).then(response => {
                                 if(response.data.code == 0){
-                                    this.$message({
-                                        message: response.data.message,
-                                        type: 'success'
-                                    });
+                                    this.$message.success(response.data.message);
                                     this.getData();
                                 }else{
-                                    this.$message({
-                                        message: response.data.message,
-                                        type: 'warning'
-                                    });
+                                    this.$message.warning(response.data.message);
                                 }
                         }).catch(() => {});
 
@@ -177,8 +168,7 @@
                 getAdminRoles(id){
                     axios.post('/admin/permission/getAdminRoles', {id:id}).then(response => {
                         this.ruleForm.roles = response.data.list;
-                        console.log(this.ruleForm.roles);
-                    }).catch(function (error) {
+                    }).catch(error =>{
                         console.log(error);
                     });
                 },
@@ -186,32 +176,24 @@
                     this.$refs[formName].validate((valid) => {
                         if (valid) {
                             if(this.ruleForm.password != this.ruleForm.confirmPw){
-                                this.$message({
-                                    message: '两次密码输入不一致！',
-                                    type: 'warning'
-                                });
+                                this.$message.warning('两次密码输入不一致！');
                                 return;
                             }
                             axios.post('/admin/permission/adminPost', this.ruleForm).then(response => {
                                 if(response.data.code == 0){
-                                    this.$message({
-                                        message: response.data.message,
-                                        type: 'success'
-                                    });
+                                    this.$message.success(response.data.message);
                                     this.getData();
                                     this.activeName = 'first';
                                     this.resetData();
                                 }else{
-                                    this.$message({
-                                        message: response.data.message,
-                                        type: 'warning'
-                                    });
+                                    this.$message.warning(response.data.message);
                                 }
-                            }).catch(function (error) {
-                                console.log(error);
+                            }).catch(error => {
+                                if(error.response.status == 422){
+                                    this.$message.warning(error.response.data.errors);
+                                }
                             });
                         } else {
-                            console.log('error submit!!');
                             return false;
                         }
                     });

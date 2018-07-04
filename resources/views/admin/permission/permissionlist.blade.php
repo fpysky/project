@@ -85,8 +85,7 @@
                     route: [
                         {required: true, message: '请输入权限路由', trigger: 'blur'},
                     ],
-                },
-                // roles:[], 
+                }, 
                 page:1,
                 pSize:50,
                 total:0,
@@ -94,8 +93,7 @@
                 multipleSelection:[],
             },
             created(){
-                this.getData();
-                // this.getRoleList();
+                this.getData(); 
                 this.getPidOptions();
                 this.initHeight();
             },
@@ -117,10 +115,7 @@
                 },
                 deleteFunc(k){
                     if(k == -1 && this.multipleSelection.length == 0){
-                        this.$message({
-                            message: '请至少选择一条记录',
-                            type: 'warning'
-                        });
+                        this.$message.warning('请至少选择一条记录');
                     }else{
                         this.$confirm('确定删除吗?', '提示', {
                             confirmButtonText: '确定',
@@ -137,20 +132,14 @@
                             }
                             axios.post('/admin/permission/deletePermission', {ids:ids}).then(response => {
                                 if(response.data.code == 0){
-                                    this.$message({
-                                        message: response.data.message,
-                                        type: 'success'
-                                    });
+                                    this.$message.success(response.data.message);
                                     this.getData();
                                 }else{
-                                    this.$message({
-                                        message: response.data.message,
-                                        type: 'warning'
-                                    });
+                                    this.$message.warning(response.data.message);
                                 }
                         }).catch(() => {});
 
-                    }).catch(function (error) {
+                    }).catch(error => {
                             console.log(error);
                         });
                     }
@@ -163,33 +152,20 @@
                     axios.post('/admin/permission/getPidOptions', {}).then(response => {
                         this.pidOptions = response.data.list;
                     }).catch(function (error) {
-                            console.log(error);
+                        console.log(error);
                     });
-                },
-                // getRoleList(){
-                //     axios.post('/admin/permission/getRoleList', {}).then(response => {
-                //         this.roles = response.data.list;
-                //     }).catch(function (error) {
-                //         console.log(error);
-                //     });
-                // },
+                }, 
                 submitForm(formName) {
                     this.$refs[formName].validate((valid) => {
                         if (valid) {
                             axios.post('/admin/permission/permissionPost', this.ruleForm).then(response => { 
                                 if(response.data.code == 0){
-                                    this.$message({
-                                        message: response.data.message,
-                                        type: 'success'
-                                    });
+                                    this.$message.success(response.data.message);
                                     this.getData();
                                     this.activeName = 'first';
                                     this.resetData();
                                 }else{
-                                    this.$message({
-                                        message: response.data.message,
-                                        type: 'warning'
-                                    });
+                                    this.$message.warning(response.data.message);
                                 }
                             }).catch(function (error) {
                                 console.log(error);
@@ -233,7 +209,7 @@
                         this.tableloading = false;
                         this.tableData = response.data.list;
                         this.total = response.data.total;
-                    }).catch(function (error) {
+                    }).catch(error => {
                         this.tableloading = false;
                         console.log(error);
                     });

@@ -88,14 +88,14 @@
                 getAllPermission(){
                     axios.post('/admin/permission/getAllPermission', {}).then(response => {
                         this.permissions = response.data.list;
-                    }).catch(function (error) {
+                    }).catch(error => {
                         console.log(error);
                     });
                 },
                 getRolePermission(id){
                     axios.post('/admin/permission/getRolePermission', {id:id}).then(response => {
                         this.ruleForm.permissions = response.data.list;
-                    }).catch(function (error) {
+                    }).catch(error => {
                         console.log(error);
                     });
                 },
@@ -120,10 +120,7 @@
                 },
                 deleteFunc(k){
                     if(k == -1 && this.multipleSelection.length == 0){
-                        this.$message({
-                            message: '请至少选择一条记录',
-                            type: 'warning'
-                        });
+                        this.$message.warning('请至少选择一条记录');
                     }else{
                         this.$confirm('确定删除吗?', '提示', {
                             confirmButtonText: '确定',
@@ -140,16 +137,10 @@
                         }
                         axios.post('/admin/permission/deleteRole', {ids:ids}).then(response => {
                             if(response.data.code == 0){
-                                this.$message({
-                                    message: response.data.message,
-                                    type: 'success'
-                                });
+                                this.$message.success(response.data.message);
                                 this.getData();
                             }else{
-                                this.$message({
-                                    message: response.data.message,
-                                    type: 'warning'
-                                });
+                                this.$message.warning(response.data.message);
                             }
                         }).catch(() => {});
 
@@ -171,18 +162,12 @@
                         if (valid) { 
                             axios.post('/admin/permission/rolePost', this.ruleForm).then(response => {
                                 if(response.data.code == 0){
-                                    this.$message({
-                                        message: response.data.message,
-                                        type: 'success'
-                                    });
+                                    this.$message.success(response.data.message);
                                     this.getData();
                                     this.activeName = 'first';
                                     this.resetData();
                                 }else{
-                                    this.$message({
-                                        message: response.data.message,
-                                        type: 'warning'
-                                    });
+                                    this.$message.warning(response.data.message);
                                 }
                             }).catch(function (error) {
                                 this.$message.error('出现错误！');

@@ -8,6 +8,7 @@ use App\Models\Adminer;
 use App\Models\Permission;
 use App\Models\Role;
 use Validator;
+use App\Http\Requests\AdminFormRequest;
 
 class PermissionController extends Controller
 {
@@ -58,29 +59,12 @@ class PermissionController extends Controller
      * @param Request $request
      * @return array
      */
-    public function adminPost(Request $request){
+    public function adminPost(AdminFormRequest $request){
         $args = $request->post();
         $args['id'] = isset($args['id'])?intval($args['id']):0;
         $args['email'] = $args['email'] ?? '';
-        $rules = [
-            'name' => 'required|unique:adminer,name',
-            'account' => 'required|unique:adminer,account',
-            'roles' => 'required'
-        ];
-        $rulesMsg = [
-            'name.required' => '用户名不能为空',
-            'account.required' => '账户名不能为空',
-            'roles.required' => '角色不能为空',
-            'roles.unique' => '用户名已存在',
-            'account.unique' => '登陆账户已存在'
-        ];
-        if($args['id'] == 0){
-            $rules['password'] = 'required';
-            $rulesMsg['password.required'] = '密码不能为空';
-        }
-        $validator = Validator::make($args,$rules,$rulesMsg);
-        if($validator->fails()){
-            return ['code' => 1,'message' => $validator->errors()->first()];
+        if($args['id'] == 0 && empty($args['password'])){
+            return ['code' => 1,'message' => '密码不能为空'];
         }
         return Adminer::adminPost($args);
     }
