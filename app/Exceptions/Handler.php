@@ -53,6 +53,12 @@ class Handler extends ExceptionHandler
         return parent::render($request, $exception);
     }
 
+    /**
+     * 自定义验证错误信息
+     * @param \Illuminate\Http\Request $request
+     * @param ValidationException $exception
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function invalidJson($request, ValidationException $exception)
     {
         return response()->json([
