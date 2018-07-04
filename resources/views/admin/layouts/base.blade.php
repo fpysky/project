@@ -15,6 +15,9 @@
     @yield('css')
 </head>
 <style>
+    body{
+        margin:0;
+    }
     .search-content{
         padding:10px .7%;
         width:98.6%;

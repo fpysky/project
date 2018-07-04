@@ -85,9 +85,6 @@
     #menu ul li ul{
         display:none;
     }
-    #menu ul li ul a{
-        /* display:block; */
-    }
     #iframe{
         width:100%;
         height:100%;
@@ -110,6 +107,18 @@
     }
     #menu .menu-box div p{
         margin:0;
+    }
+    #loadPrompt{
+        width:100%;
+        top:0;
+        position: absolute;
+        opacity: .8;
+        background-color:#fff;
+        text-align: center;
+    }
+    #loadPrompt p{
+        margin:26% 0 0 0;
+        font-size: 50px;
     }
 </style>
 <body>
@@ -143,8 +152,12 @@
         </div>
         <div class="contentRight">
             <iframe id="iframe" src="/admin/main" frameborder="0"></iframe>
+            <div id="loadPrompt" v-show="iframeLoading">
+                <p>LOADING......</p>
+            </div>
         </div>
     </div>
+    
 </div>
 </body>
 </html>
@@ -154,16 +167,12 @@
         data:{
             permissions:[],
             adminInfo:{},
+            iframeLoading:false,
         },
         created(){
             this.initHeight();
             this.getAdminPermission();
             this.getAdminInfo();
-        },
-        updated() {
-            this.$nextTick(function () {
-                this.menuActive();
-            })
         },
         methods:{
             setAdminInfo(){
@@ -180,14 +189,22 @@
             menuActive(){
                 let menu = document.getElementById('menu');
                 let menuBox = menu.getElementsByClassName('menu-box');
-                for(let i = 0;i < menuBox.length;i++){ 
+                let menuBoxPHeight = menu.getElementsByClassName('menu-box')[0].getElementsByTagName('p')[0].offsetHeight;
+                let menuBoxLen = menuBox.length;
+                for(let i = 0; i < menuBoxLen; i++){
+                    menuBox[i].i = i;
                     menuBox[i].getElementsByTagName('a')[0].onclick = function(){
                         let len = this.nextElementSibling.getElementsByTagName('a').length;
+                        for(let j = 0; j < menuBoxLen; j++){
+                            if(j != this.parentNode.i){
+                                menuBox[j].getElementsByTagName('div')[0].style.height = 0;
+                            }
+                        }
                         if(this.nextElementSibling.offsetHeight == 0){
                             if(len == 1){
-                                this.nextElementSibling.style.height = 34 +'px';
+                                this.nextElementSibling.style.height = menuBoxPHeight +'px';
                             }else{
-                                this.nextElementSibling.style.height = 34 * len + 20 +'px';
+                                this.nextElementSibling.style.height = menuBoxPHeight * len +'px';
                             }
                         }else{
                             this.nextElementSibling.style.height = 0;
@@ -198,12 +215,32 @@
             getAdminPermission(){
                 axios.post('/admin/permission/getAdminPermission',{}).then(response => {
                     this.permissions = response.data.list;
+                    this.$nextTick(function () {
+                        this.menuActive();
+                    })
                 }).catch(error => {
                     console.log(error);
                 });
             },
             menuAClick(url){
-                document.getElementById('iframe').setAttribute('src',url);
+                let iframe = document.getElementById('iframe');
+                iframe.setAttribute('src',url);
+                this.iframeLoading = true;
+                document.getElementById('loadPrompt').style.display = 'block';
+                if (iframe.attachEvent){ 
+                    iframe.attachEvent("onload", function(){
+                        this.iframeLoading = false;
+                        console.log(this.iframeLoading);
+                        document.getElementById('loadPrompt').style.display = 'none';
+                    }); 
+                } else { 
+                    iframe.onload = function(){
+                        this.iframeLoading = false;
+                        console.log(this.iframeLoading);
+                        document.getElementById('loadPrompt').style.display = 'none';
+                    }; 
+                }
+                console.log(this.iframeLoading);
                 return false;
             },
             logout(){
@@ -217,6 +254,7 @@
                 let h = document.documentElement.clientHeight - 5;
                 document.getElementsByClassName('contentLeft')[0].style.height = h + 'px';
                 document.getElementsByClassName('contentRight')[0].style.height = h + 'px';
+                document.getElementById('loadPrompt').style.height = h + 'px';
             }
         },
     });

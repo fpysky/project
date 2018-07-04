@@ -67,6 +67,7 @@ class Permission extends Base{
                 $insertData = [
                     'name' => $args['name'],
                     'route' => $args['route'],
+                    'icon' => $args['icon'] ?? '',
                     'pid' => intval($args['pid']),
                     'created_at' => time(),
                     'updated_at' => time(),
@@ -86,6 +87,7 @@ class Permission extends Base{
                 $permission = Permission::where('id','=',$args['id'])->firstOrFail();
                 $permission->name = $args['name'];
                 $permission->route = $args['route'];
+                $permission->icon = $args['icon'];
                 $permission->pid = intval($args['pid']);
                 $permission->updated_at = time();
                 $res = $permission->save();

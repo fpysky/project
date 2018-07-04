@@ -49,6 +49,10 @@
                 <el-form-item label="权限名称:" prop="name">
                     <el-input v-model="ruleForm.name" style="width:300px;"></el-input>
                 </el-form-item>
+                <el-form-item label="图标:" prop="icon">
+                    <el-input v-model="ruleForm.icon" style="width:300px;"></el-input>
+                    <a target="_blank" href="http://fontawesome.dashgame.com/">不知道格式?</a>
+                </el-form-item>
                 <el-form-item label="权限路由:" prop="route">
                     <el-input v-model="ruleForm.route" style="width:300px;"></el-input>
                 </el-form-item>
@@ -75,6 +79,7 @@
                 ruleForm:{
                     id:0,
                     name:'',
+                    icon:'',
                     route:'',
                     pid:0,
                 },
@@ -186,6 +191,7 @@
                     this.ruleForm.name = this.tableData[k].name;
                     this.ruleForm.route = this.tableData[k].route; 
                     this.ruleForm.pid = this.tableData[k].pid;
+                    this.ruleForm.icon = this.tableData[k].icon;
                 },
                 handleClick(tab, event){
                     if(this.activeName == 'first'){
