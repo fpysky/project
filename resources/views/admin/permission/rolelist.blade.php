@@ -169,9 +169,10 @@
                                 }else{
                                     this.$message.warning(response.data.message);
                                 }
-                            }).catch(function (error) {
-                                this.$message.error('出现错误！');
-                                console.log(error);
+                            }).catch(error =>  {
+                                if(error.response.status == 422){
+                                    this.$message.warning(error.response.data.errors);
+                                }
                             });
                         } else {
                             return false;

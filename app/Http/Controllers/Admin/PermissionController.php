@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\PermissionFormRequest;
+use App\Http\Requests\RoleFormRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Adminer;
 use App\Models\Permission;
 use App\Models\Role;
-use Validator;
 use App\Http\Requests\AdminFormRequest;
 
 class PermissionController extends Controller
@@ -56,7 +57,7 @@ class PermissionController extends Controller
 
     /**
      * 管理员提交
-     * @param Request $request
+     * @param AdminFormRequest $request
      * @return array
      */
     public function adminPost(AdminFormRequest $request){
@@ -122,24 +123,12 @@ class PermissionController extends Controller
 
     /**
      * 角色提交
-     * @param Request $request
+     * @param RoleFormRequest $request
      * @return array
      */
-    public function rolePost(Request $request){
+    public function rolePost(RoleFormRequest $request){
         $args = $request->post();
         $args['id'] = isset($args['id'])?intval($args['id']):0;
-        $validator = Validator::make($args,[
-            'name' => 'required|max:10|unique:role,name,'.$args['id'],
-            'permissions' => 'required'
-        ],[
-            'name.required' => '角色名不能为空',
-            'name.max' => '角色名最大长度为10',
-            'name.unique' => '角色名重复',
-            'permissions.required' => '角色权限不能为空'
-        ]);
-        if($validator->fails()){
-            return ['code' => 1,'message' => $validator->errors()->first()];
-        }
         if($args['id'] == 1){
             return ['code' => 1,'message' => '此角色涉及到系统关键功能无法修改'];
         }
@@ -200,22 +189,12 @@ class PermissionController extends Controller
 
     /**
      * 权限提交
-     * @param Request $request
+     * @param PermissionFormRequest $request
      * @return array
      */
-    public function permissionPost(Request $request){
+    public function permissionPost(PermissionFormRequest $request){
         $args = $request->post();
         $args['id'] = isset($args['id'])?intval($args['id']):0;
-        $validator = Validator::make($args,[
-            'name' => 'required',
-            'route' => 'required'
-        ],[
-            'name.required' => '权限名不能为空',
-            'route.required' => '路由名称不能为空'
-        ]);
-        if($validator->fails()){
-            return ['code' => 1,'message' => $validator->errors()->first()];
-        }
         if($args['id'] == 1 || $args['id'] == 2 || $args['id'] == 3){
             return ['code' => 1,'message' => '此权限涉及到系统关键功能无法修改'];
         }

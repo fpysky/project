@@ -151,7 +151,7 @@
                 getPidOptions(){
                     axios.post('/admin/permission/getPidOptions', {}).then(response => {
                         this.pidOptions = response.data.list;
-                    }).catch(function (error) {
+                    }).catch(error => {
                         console.log(error);
                     });
                 }, 
@@ -167,8 +167,10 @@
                                 }else{
                                     this.$message.warning(response.data.message);
                                 }
-                            }).catch(function (error) {
-                                console.log(error);
+                            }).catch(error => {
+                                if(error.response.status == 422){
+                                    this.$message.warning(error.response.data.errors);
+                                }
                             });
                         } else {
                             console.log('error submit!!');
