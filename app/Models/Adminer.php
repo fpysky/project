@@ -171,9 +171,29 @@ class Adminer extends Base{
         }
     }
 
+    /**
+     * 获取管理员详细信息
+     * @param $identity
+     * @return array
+     */
     public static function getAdminInfo($identity){
         $list = Adminer::where('id','=',$identity['adminer_id'])->firstOrFail();
         $list = new AdminerResource($list);
         return ['code' => 0,'message' => '','list' => $list];
+    }
+
+    public static function adminInfoPost($args){
+        try{
+            $adminer = Adminer::where('id','=',$args['id'])->firstOrFail();
+            $adminer->head_img = $args['imageUrl'];
+            $res = $adminer->save();
+            if(empty($res)){
+                throw new \Exception();
+            }
+            return ['code' => 0,'message' => '操作成功'];
+        }catch (\Exception $e){
+            return ['code' => 1,'message' => $e->getMessage()];
+        }
+
     }
 }

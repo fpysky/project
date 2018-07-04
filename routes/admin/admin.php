@@ -5,6 +5,8 @@ Route::group(['middleware' => 'adminAuth'],function(){
     Route::any('/main','IndexController@main');//后台主页
     Route::post('/getAdminInfo','IndexController@getAdminInfo');//得到管理员详细信息
     Route::any('/admininfo','IndexController@admininfo');
+    Route::post('/headUpload','IndexController@headUpload');//管理员头像上传
+    Route::post('/adminInfoPost','IndexController@adminInfoPost');//管理员头像上传
 });
 
 //登录

@@ -18,6 +18,7 @@ class AdminerResource extends Resource
             'id' => $this->id,
             'name' => $this->name,
             'account' => $this->account,
+            'head_img' => $this->head_img,
             'email' => $this->email,
             'created_at' => $this->created_at?date('Y-m-d H-i-s',$this->created_at):'',
             'updated_at' => $this->updated_at?date('Y-m-d H-i-s',$this->updated_at):'',

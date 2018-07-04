@@ -119,7 +119,7 @@
             <div class="contentLeft-header">
                 <a href="javascript:;" @click="setAdminInfo">
                     <div class="contentLeft-header-left">
-                        <img src="/images/header.jpg" alt="" />
+                        <img :src="adminInfo.head_img == ''?'/images/header.jpg':adminInfo.head_img" alt="" />
                     </div>
                 </a>
                 <div class="contentLeft-header-right">

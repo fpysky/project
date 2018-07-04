@@ -1,21 +1,48 @@
 @extends('admin.layouts.base')
 @section('css')
+<style>
+    .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+    }
+    .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+    }
+    .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
+    }
+</style>
 @endsection
 @section('content')
     <div id="app">
-        <el-upload
-        class="upload-demo"
-        action="https://jsonplaceholder.typicode.com/posts/"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :before-remove="beforeRemove"
-        multiple
-        :limit="3"
-        :on-exceed="handleExceed"
-        :file-list="fileList">
-        <el-button size="small" type="primary">点击上传</el-button>
-        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-        </el-upload>
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" >
+            <h5>用户头像上传</h5>
+            <el-upload
+                class="avatar-uploader"
+                action="/admin/headUpload"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload">
+                <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+            <el-form-item>
+                <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+            </el-form-item>
+        </el-form>
     </div>
 @endsection
 @section('js')
@@ -23,23 +50,49 @@
     new Vue({
         el:'#app',
         data:{
-            fileList:[],
+            ruleForm:{
+                imageUrl:'',
+            },
+            rules:{},
+            imageUrl:'',
         },
         created(){
-            console.log(this);
+            
         },
         methods: {
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        axios.post('/admin/adminInfoPost',this.ruleForm).then(response => {
+                            if(response.data.code == 0){
+                                this.$message.success(response.data.message);
+                            }else{
+                                this.$message.warning(response.data.message);
+                            }
+                        }).catch(error => {
+                            console.log(error);
+                        });
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
             },
-            handlePreview(file) {
-                console.log(file);
+            handleAvatarSuccess(res, file) {
+                this.imageUrl = URL.createObjectURL(file.raw);
+                this.ruleForm.imageUrl = res.path;
             },
-            handleExceed(files, fileList) {
-                // this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-            },
-            beforeRemove(file, fileList) {
-                // return this.$confirm(`确定移除 ${ file.name }？`);
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
             }
         }
     });
